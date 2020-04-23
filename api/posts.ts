@@ -1,8 +1,9 @@
-
 import fetch from 'node-fetch';
-import { PlansResponse } from './types';
+import { PlansResponse, Currency } from './types';
 
-export const getPosts = async (): Promise<PlansResponse> => {
+export const getPosts = async (
+  currency = Currency.EUR
+): Promise<PlansResponse> => {
   const myInit = {
     method: 'GET',
     headers: {
@@ -13,6 +14,9 @@ export const getPosts = async (): Promise<PlansResponse> => {
     },
     mode: 'cors',
   };
-  const response = await fetch('https://api.protonmail.ch/payments/plans?EUR', myInit);
+  const response = await fetch(
+    `https://api.protonmail.ch/payments/plans?Currency=${currency}`,
+    myInit
+  );
   return response.json();
 };

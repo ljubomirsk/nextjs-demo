@@ -22,3 +22,9 @@ export interface PlansResponse {
   Code: number;
   Plans: Array<Plan>;
 }
+
+export enum Currency {
+  USD = 'USD',
+  EUR = 'EUR',
+  CHF = 'CHF',
+}

@@ -9,12 +9,15 @@
     "plugin:react/recommended",
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript"
   ],
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier"
   ],
   "settings": {
     "import/parsers": {
@@ -33,7 +36,7 @@
     "project": "tsconfig.json"
   },
   "rules": {
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "warn",
     "arrow-body-style": [
       "error",
       "as-needed"
@@ -42,6 +45,13 @@
     "react/react-in-jsx-scope": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "import/prefer-default-export": 0,
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+        "singleQuote": true
+      }
+    ]
   }
 }
