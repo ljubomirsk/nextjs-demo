@@ -28,3 +28,9 @@ export enum Currency {
   EUR = 'EUR',
   CHF = 'CHF',
 }
+
+export enum Period {
+  Monthly = 1,
+  Annualy = 12,
+  Biennially = 24,
+}

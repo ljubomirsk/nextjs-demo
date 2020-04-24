@@ -2,6 +2,11 @@ import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { Currency } from '../api/types';
 
+export interface DropdownOption {
+  value: string | number;
+  displayName: string;
+}
+
 const Select = styled.select`
   border: 1px solid #4c4d4c;
   border-radius: 0.188em;
@@ -18,7 +23,7 @@ const Select = styled.select`
   background-repeat: no-repeat;
   background-position: right 0.7em top 50%, 0 0;
   background-size: 0.65em auto, 100%;
-  margin: 0;
+  margin: 0 1rem;
   box-sizing: border-box;
   appearance: none;
   &:hover {
@@ -35,8 +40,8 @@ const Select = styled.select`
 `;
 
 interface OwnProps {
-  options: Array<string>;
-  onOptionChange: (value: Currency) => void;
+  options: Array<DropdownOption>;
+  onOptionChange: (value: any) => void;
 }
 
 type Props = OwnProps;
@@ -49,8 +54,8 @@ const Dropdown = ({ onOptionChange, options }: Props) => {
   return (
     <Select onChange={onDropdownChange}>
       {options.map((option) => (
-        <option value={option} key={option}>
-          {option}
+        <option value={option.value} key={option.value}>
+          {option.displayName}
         </option>
       ))}
     </Select>

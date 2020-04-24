@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GetStaticProps } from 'next';
 import { getPosts } from '../api/posts';
-import Dropdown from '../components/Dropdown';
-import { Plan, Currency } from '../api/types';
+import Dropdown, { DropdownOption } from '../components/Dropdown';
+import { Plan, Currency, Period } from '../api/types';
+import BillingOption from '../components/BillingOption';
 
 const Container = styled.div`
   width: 100%;
@@ -20,7 +21,42 @@ const DropdownContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const currencyDropdownOptions = [Currency.EUR, Currency.USD, Currency.CHF];
+const PlansContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+`;
+
+const currencyDropdownOptions: Array<DropdownOption> = [
+  {
+    value: Currency.EUR,
+    displayName: 'Euro',
+  },
+  {
+    value: Currency.USD,
+    displayName: 'US Dollar',
+  },
+  {
+    value: Currency.CHF,
+    displayName: 'Swiss Frank',
+  },
+];
+const periodDropdownOptions: Array<DropdownOption> = [
+  {
+    value: Period.Monthly,
+    displayName: 'Monthly',
+  },
+  {
+    value: Period.Annualy,
+    displayName: 'Anually',
+  },
+  {
+    value: Period.Biennially,
+    displayName: '2 Years',
+  },
+];
 
 interface OwnProps {
   plans: Array<Plan>;
@@ -30,6 +66,7 @@ type Props = OwnProps;
 
 const App = ({ plans }: Props) => {
   const [currency, setCurrency] = useState(Currency.EUR);
+  const [period, setPeriod] = useState(Period.Monthly);
   const [plansByCurrency, setPlansByCurrency] = useState({ [currency]: plans });
 
   const fetchPlansForCurrency = async () => {
@@ -51,7 +88,13 @@ const App = ({ plans }: Props) => {
           onOptionChange={setCurrency}
           options={currencyDropdownOptions}
         />
+        <Dropdown onOptionChange={setPeriod} options={periodDropdownOptions} />
       </DropdownContainer>
+      <PlansContainer>
+        {plansByCurrency[currency].map((plan) => (
+          <BillingOption key={plan.ID} plan={plan} period={period} />
+        ))}
+      </PlansContainer>
     </Container>
   );
 };
