@@ -15,6 +15,9 @@ const Container = styled.div`
   color: rgba(0, 0, 0, 0.7);
   margin: 2rem 0;
   font-weight: bold;
+  @media (max-width: 1080px) {
+    width: 50%;
+  }
 `;
 
 const Header = styled.div`
