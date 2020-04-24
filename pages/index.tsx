@@ -32,11 +32,11 @@ const PlansContainer = styled.div`
 const currencyDropdownOptions: Array<DropdownOption> = [
   {
     value: Currency.EUR,
-    displayName: 'Euro',
+    displayName: '€ Euro',
   },
   {
     value: Currency.USD,
-    displayName: 'US Dollar',
+    displayName: '$ US Dollar',
   },
   {
     value: Currency.CHF,
@@ -91,7 +91,7 @@ const App = ({ plans }: Props) => {
         <Dropdown onOptionChange={setPeriod} options={periodDropdownOptions} />
       </DropdownContainer>
       <PlansContainer>
-        {plansByCurrency[currency].map((plan) => (
+        {plansByCurrency[currency]?.map((plan) => (
           <BillingOption key={plan.ID} plan={plan} period={period} />
         ))}
       </PlansContainer>

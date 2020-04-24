@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Plan, Period } from '../api/types';
+import { Plan, Period, Currency } from '../api/types';
+import { bytesToSize } from '../utils/helpers';
 
 const Container = styled.div`
   border: 2px solid rgba(192, 192, 192, 0.5);
@@ -10,7 +11,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 20%;
-  height: 30rem;
+  height: 32rem;
   color: rgba(0, 0, 0, 0.7);
   margin: 2rem 0;
   font-weight: bold;
@@ -48,6 +49,9 @@ const UnorderedList = styled.ul`
   padding: 0;
   align-self: flex-start;
   height: 7rem;
+  li {
+    margin: 0.4rem 0;
+  }
   li:before {
     content: '→';
     padding-right: 8px;
@@ -75,6 +79,18 @@ const Button = styled.button`
   }
 `;
 
+const currencySigns = {
+  [Currency.EUR]: '€',
+  [Currency.USD]: '$',
+  [Currency.CHF]: Currency.CHF,
+};
+
+const periodLabels = {
+  [Period.Monthly]: 'mo',
+  [Period.Annualy]: 'year',
+  [Period.Biennially]: '2 years',
+};
+
 interface OwnProps {
   plan: Plan;
   period: Period;
@@ -83,19 +99,46 @@ interface OwnProps {
 type Props = OwnProps;
 
 const BillingOption = ({ plan, period }: Props) => {
-  console.log('eee');
+  const currencySign = currencySigns[plan.Currency as Currency];
+  const amountPerYear =
+    period === Period.Monthly
+      ? ((plan.Pricing[period] * 12) / 100).toFixed(2)
+      : null;
+
   return (
     <Container>
       <Header>
-        <h5>MOST POPULAR</h5>
-        <h4>PLUS</h4>
+        {plan.Name.includes('plus') && <h5>MOST POPULAR</h5>}
+        <h4>{plan.Title.toUpperCase()}</h4>
       </Header>
       <PriceContainer>
-        $ {<Amount>4</Amount>}/mo{<div>Billed as $48 per year</div>}
+        {currencySign}
+        {<Amount>{(plan.Pricing[period] / 100).toFixed(2)}</Amount>}/
+        {periodLabels[period]}
+        {plan.Pricing[period] !== 0 && amountPerYear && (
+          <div>
+            Billed as {currencySign}
+            {amountPerYear} per year
+          </div>
+        )}
       </PriceContainer>
       <Description>Full featured mailbox with advanced protection</Description>
       <UnorderedList>
-        <li>test</li>
+        <li>{plan.MaxMembers} user</li>
+        <li>{bytesToSize(plan.MaxSpace)}</li>
+        <li>
+          {plan.MaxAddresses}{' '}
+          {plan.MaxAddresses === 1 ? 'address' : 'addresses'}
+        </li>
+        <li>
+          {plan.MaxDomains === 0
+            ? 'No domains support'
+            : `Supports ${plan.MaxDomains} domains`}
+        </li>
+        {plan.Features > 0 && <li>Supports {plan.Features} features</li>}
+        <li>
+          {plan.MaxVPN === 0 ? 'ProtonVPN (optional)*' : 'Includes ProtonVPN'}
+        </li>
       </UnorderedList>
       <Button>Select</Button>
     </Container>

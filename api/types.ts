@@ -30,7 +30,7 @@ export enum Currency {
 }
 
 export enum Period {
-  Monthly = 1,
-  Annualy = 12,
-  Biennially = 24,
+  Monthly = '1',
+  Annualy = '12',
+  Biennially = '24',
 }
